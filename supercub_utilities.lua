@@ -219,11 +219,6 @@ function supercub.destroy(self)
     if self.pilot_seat_base then self.pilot_seat_base:remove() end
     if self.passenger_seat_base then self.passenger_seat_base:remove() end
 
-    if self.elevator then self.elevator:remove() end
-    if self.rudder then self.rudder:remove() end
-    if self.right_aileron then self.right_aileron:remove() end
-    if self.left_aileron then self.left_aileron:remove() end
-
     if self.stick then self.stick:remove() end
 
     self.object:remove()
@@ -667,9 +662,11 @@ function supercub.flightstep(self)
 
     if stop ~= true then
         self._last_accell = new_accel
-    elseif stop == false then
-        self.object:set_acceleration({x=0,y=0,z=0})
-        self.object:set_velocity({x=0,y=0,z=0})
+    else
+        if stop == true then
+            self.object:set_acceleration({x=0,y=0,z=0})
+            self.object:set_velocity({x=0,y=0,z=0})
+        end
     end
     ------------------------------------------------------
     -- end accell
@@ -723,12 +720,14 @@ function supercub.flightstep(self)
     --end
 
     --adjust elevator pitch (3d model)
-    self.elevator:set_attach(self.object,'',{x=0,y=4,z=-35.5},{x=-self._elevator_angle*2,y=0,z=0})
+    --self.elevator:set_attach(self.object,'',{x=0,y=4,z=-35.5},{x=-self._elevator_angle*2,y=0,z=0})
+    self.object:set_bone_position("elevator", {x=0, y=4, z=-35.5}, {x=-self._elevator_angle*2 - 90, y=0, z=0})
     --adjust rudder
-    self.rudder:set_attach(self.object,'',{x=0,y=0.12,z=-36.85},{x=0,y=self._rudder_angle,z=0})
+    --self.rudder:set_attach(self.object,'',{x=0,y=0.12,z=-36.85},{x=0,y=self._rudder_angle,z=0})
+    self.object:set_bone_position("rudder", {x=0,y=8.4,z=-36.85}, {x=0,y=self._rudder_angle,z=0})
     --adjust ailerons
-    self.right_aileron:set_attach(self.object,'',{x=0,y=8.08,z=-7},{x=-self._rudder_angle,y=0,z=0})
-    self.left_aileron:set_attach(self.object,'',{x=0,y=8.08,z=-7},{x=self._rudder_angle,y=0,z=0})
+    self.object:set_bone_position("aileron.r", {x=30.377,y=8.08,z=-7}, {x=-self._rudder_angle - 90,y=0,z=0})
+    self.object:set_bone_position("aileron.l", {x=-30.377,y=8.08,z=-7}, {x=self._rudder_angle - 90,y=0,z=0})
     --set stick position
     self.stick:set_attach(self.object,'',{x=0,y=-6,85,z=8},{x=self._elevator_angle/2,y=0,z=self._rudder_angle})
 

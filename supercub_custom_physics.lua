@@ -33,23 +33,26 @@ function supercub.physics(self)
 	
     local new_velocity = nil
 
-    local accell = {x=0, y=0, z=0}
+    local accell = self._last_accell
+    accell.y = accell.y + mobkit.gravity
     self.water_drag = 0.1
 
     mobkit.set_acceleration(self.object,{x=0,y=0,z=0})
 	self.isinliquid = false
-    new_velocity = vector.add(vel, {x=0,y=mobkit.gravity * self.dtime,z=0})
+    --new_velocity = vector.add(vel, {x=0,y=mobkit.gravity * self.dtime,z=0})
     --self.object:set_velocity(new_velocity)
 
-    new_velocity = vector.add(new_velocity, vector.multiply(self._last_accell, self.dtime))
+    new_velocity = vector.add(vel, vector.multiply(accell, self.dtime))
     self.object:set_pos(self.object:get_pos())
 		-- dumb friction
 	if self.isonground and not self.isinliquid then
 		self.object:set_velocity({x=new_velocity.x*friction,
 								y=new_velocity.y,
 								z=new_velocity.z*friction})
+        
     else
         self.object:set_velocity(new_velocity)
+        self.object:set_acceleration(accell)
 	end
 
 end

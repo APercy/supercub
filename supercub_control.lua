@@ -86,13 +86,17 @@ function supercub.control(self, dtime, hull_direction, longit_speed, longit_drag
                     --break
                     if longit_speed > 0 then
                         engineacc = -1
-                        if (longit_speed + engineacc) < 0 then engineacc = longit_speed * -1 end
+                        if (longit_speed + engineacc) < 0 then
+                            engineacc = longit_speed * -1
+                        end
                     end
                     if longit_speed < 0 then
                         engineacc = 1
-                        if (longit_speed + engineacc) > 0 then engineacc = longit_speed * -1 end
+                        if (longit_speed + engineacc) > 0 then
+                            engineacc = longit_speed * -1
+                        end
                     end
-                    if abs(longit_speed) < 0.1 then
+                    if abs(longit_speed) < 0.2 then
                         stop = true
                     end
                 end

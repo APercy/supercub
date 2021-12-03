@@ -30,96 +30,6 @@ initial_properties = {
 	
 })
 
-minetest.register_entity('supercub:rudder',{
-    initial_properties = {
-	    physical = false,
-	    collide_with_objects=false,
-	    pointable=false,
-	    visual = "mesh",
-	    mesh = "supercub_rudder.b3d",
-	    textures = {"supercub_painting.png",},
-	},
-    _color="",
-	
-    on_activate = function(self, std)
-	    self.sdata = minetest.deserialize(std) or {}
-	    if self.sdata.remove then self.object:remove() end
-    end,
-	    
-    get_staticdata=function(self)
-      self.sdata.remove=true
-      return minetest.serialize(self.sdata)
-    end,
-})
-
-minetest.register_entity('supercub:elevator',{
-    initial_properties = {
-	    physical = false,
-	    collide_with_objects=false,
-	    pointable=false,
-	    visual = "mesh",
-	    mesh = "supercub_elevator.b3d",
-	    textures = {"supercub_painting.png",},
-	},
-    _color="",
-	
-    on_activate = function(self, std)
-	    self.sdata = minetest.deserialize(std) or {}
-	    if self.sdata.remove then self.object:remove() end
-    end,
-	    
-    get_staticdata=function(self)
-      self.sdata.remove=true
-      return minetest.serialize(self.sdata)
-    end,
-})
-
-minetest.register_entity('supercub:right_aileron',{
-    initial_properties = {
-	    physical = false,
-	    collide_with_objects=false,
-	    pointable=false,
-	    visual = "mesh",
-	    mesh = "supercub_aileron_r.b3d",
-	    textures = {"supercub_painting.png",},
-	},
-    _color="",
-	
-    on_activate = function(self, std)
-	    self.sdata = minetest.deserialize(std) or {}
-	    if self.sdata.remove then self.object:remove() end
-    end,
-	    
-    get_staticdata=function(self)
-      self.sdata.remove=true
-      return minetest.serialize(self.sdata)
-    end,
-
-})
-
-minetest.register_entity('supercub:left_aileron',{
-    initial_properties = {
-	    physical = false,
-	    collide_with_objects=false,
-	    pointable=false,
-	    visual = "mesh",
-	    mesh = "supercub_aileron_l.b3d",
-	    textures = {"supercub_painting.png",},
-	},
-    _color="",
-	
-    on_activate = function(self, std)
-	    self.sdata = minetest.deserialize(std) or {}
-	    if self.sdata.remove then self.object:remove() end
-    end,
-	    
-    get_staticdata=function(self)
-      self.sdata.remove=true
-      return minetest.serialize(self.sdata)
-    end,
-
-})
-
 minetest.register_entity('supercub:stick',{
 initial_properties = {
 	physical = false,
@@ -201,29 +111,32 @@ minetest.register_entity("supercub:supercub", {
 	    visual = "mesh",
 	    mesh = "supercub_fuselage.b3d",
         stepheight = 0.5,
-        textures = {"supercub_metal.png",
-                    "supercub_black.png",
-                    "supercub_black.png",
-                    "supercub_metal.png",
-                    "supercub_painting.png",
-                    "supercub_grey.png",
-                    "supercub_painting.png",
-                    "supercub_painting.png",
-                    "supercub_panel.png",
-                    "supercub_painting.png",
+        textures = {
+                    "supercub_painting.png", --ailerons
+                    "supercub_metal.png", -- bequilha
+                    "supercub_black.png", --banco
+                    "supercub_black.png", --banco
+                    "supercub_metal.png", --motor
+                    "supercub_painting.png", -- est horizontal
+                    "supercub_grey.png", -- longarinas
+                    "supercub_painting.png", -- montantes
+                    "supercub_painting.png", --trem
+                    "supercub_panel.png", --panel
+                    "supercub_painting.png", --fuselagem
+                    "supercub_painting.png", --fuselagem
                     "supercub_glass.png", --glass
                     "supercub_glass.png", -- glass
-                    "supercub_black.png",
-                    "supercub_grey.png",
-                    "supercub_black.png",
-                    "supercub_black2.png",
-                    "supercub_black.png",
-                    "supercub_metal.png",
-                    "supercub_black.png",
-                    "supercub_glass.png",
-                    "supercub_black.png",
-                    "supercub_metal.png",
-                    "supercub_painting.png"
+                    "supercub_black.png", -- interior nacele motor
+                    "supercub_grey.png", -- interior
+                    "supercub_black.png", -- painel cor 1
+                    "supercub_black.png", -- painel cor 2
+                    "supercub_black.png", -- pneu bequilha
+                    "supercub_metal.png", -- pneu bequilha
+                    "supercub_black2.png", -- tampa cabeçote
+                    "supercub_glass.png", -- vidro em cima
+                    "supercub_black.png", --pneu
+                    "supercub_metal.png", --aro
+                    "supercub_painting.png" --wing
                     },
     },
     textures = {},
@@ -301,40 +214,24 @@ minetest.register_entity("supercub:supercub", {
         engine:set_animation({x = 1, y = 12}, 0, 0, true)
 	    self.engine = engine
 
-	    local rudder=minetest.add_entity(pos,'supercub:rudder')
-	    rudder:set_attach(self.object,'',{x=0,y=0.12,z=-36.85},{x=0,y=0,z=0})
-	    self.rudder = rudder
-
-	    local right_aileron=minetest.add_entity(pos,'supercub:right_aileron')
-	    right_aileron:set_attach(self.object,'',{x=0,y=8.08,z=-7},{x=0,y=0,z=0})
-	    self.right_aileron = right_aileron
-
-	    local left_aileron=minetest.add_entity(pos,'supercub:left_aileron')
-	    left_aileron:set_attach(self.object,'',{x=0,y=8.08,z=-7},{x=0,y=0,z=0})
-	    self.left_aileron = left_aileron
-
-	    local elevator=minetest.add_entity(pos,'supercub:elevator')
-	    elevator:set_attach(self.object,'',{x=0,y=4,z=-35.5},{x=0,y=0,z=0})
-	    self.elevator = elevator
-
 	    local fuel_gauge=minetest.add_entity(pos,'supercub:pointer')
         local energy_indicator_angle = supercub.get_gauge_angle(self._energy)
-	    fuel_gauge:set_attach(self.object,'',supercub_GAUGE_FUEL_POSITION,{x=0,y=0,z=energy_indicator_angle})
+	    fuel_gauge:set_attach(self.object,'',SUPERCUB_GAUGE_FUEL_POSITION,{x=0,y=0,z=energy_indicator_angle})
 	    self.fuel_gauge = fuel_gauge
 
 	    local power_gauge=minetest.add_entity(pos,'supercub:pointer')
         local power_indicator_angle = supercub.get_gauge_angle(self._power_lever)
-	    power_gauge:set_attach(self.object,'',supercub_GAUGE_POWER_POSITION,{x=0,y=0,z=power_indicator_angle})
+	    power_gauge:set_attach(self.object,'',SUPERCUB_GAUGE_POWER_POSITION,{x=0,y=0,z=power_indicator_angle})
 	    self.power_gauge = power_gauge
 
 	    local climb_gauge=minetest.add_entity(pos,'supercub:pointer')
         local climb_angle = supercub.get_gauge_angle(0)
-	    climb_gauge:set_attach(self.object,'',supercub_GAUGE_CLIMBER_POSITION,{x=0,y=0,z=climb_angle})
+	    climb_gauge:set_attach(self.object,'',SUPERCUB_GAUGE_CLIMBER_POSITION,{x=0,y=0,z=climb_angle})
 	    self.climb_gauge = climb_gauge
 
 	    local speed_gauge=minetest.add_entity(pos,'supercub:pointer')
         local speed_angle = supercub.get_gauge_angle(100)
-	    speed_gauge:set_attach(self.object,'',supercub_GAUGE_SPEED_POSITION,{x=0,y=0,z=speed_angle})
+	    speed_gauge:set_attach(self.object,'',SUPERCUB_GAUGE_SPEED_POSITION,{x=0,y=0,z=speed_angle})
 	    self.speed_gauge = speed_gauge
 
         local pilot_seat_base=minetest.add_entity(pos,'supercub:seat_base')
@@ -350,10 +247,6 @@ minetest.register_entity("supercub:supercub", {
 	    self.stick = stick
 
         supercub.paint(self, self.object, self._color, "supercub_painting.png")
-        supercub.paint(self, self.elevator, self._color, "supercub_painting.png")
-        supercub.paint(self, self.rudder, self._color, "supercub_painting.png")
-        supercub.paint(self, self.right_aileron, self._color, "supercub_painting.png")
-        supercub.paint(self, self.left_aileron, self._color, "supercub_painting.png")
 
 		self.object:set_armor_groups({immortal=1})
 	end,
@@ -450,10 +343,6 @@ minetest.register_entity("supercub:supercub", {
                     --minetest.chat_send_all(color ..' '.. dump(colstr))
 				    if colstr then
                         supercub.paint(self, self.object, colstr, "supercub_painting.png")
-                        supercub.paint(self, self.elevator, colstr, "supercub_painting.png")
-                        supercub.paint(self, self.rudder, colstr, "supercub_painting.png")
-                        supercub.paint(self, self.right_aileron, colstr, "supercub_painting.png")
-                        supercub.paint(self, self.left_aileron, colstr, "supercub_painting.png")
 					    itmstck:set_count(itmstck:get_count()-1)
 					    puncher:set_wielded_item(itmstck)
 				    end
@@ -505,32 +394,7 @@ minetest.register_entity("supercub:supercub", {
             end
             if can_access then
 	            if name == self.driver_name then
-                    --=========================
-                    --  dettach player
-                    --=========================
-                    -- eject passenger if the plane is on ground
-                    local touching_ground, liquid_below = supercub.check_node_below(self.object)
-                    if self.isinliquid or touching_ground or liquid_below then --isn't flying?
-                        --ok, remove pax
-                        if self._passenger then
-                            local passenger = minetest.get_player_by_name(self._passenger)
-                            if passenger then supercub.dettach_pax(self, passenger) end
-                        end
-                    else
-                        --give the control to the pax
-                        if self._passenger then
-                            self._autopilot = false
-                            supercub.transfer_control(self, true)
-                        end
-                    end
-                    self._instruction_mode = false
-                    supercub.dettachPlayer(self, clicker)
-                    --[[ sound and animation
-                    if self.sound_handle then
-                        minetest.sound_stop(self.sound_handle)
-                        self.sound_handle = nil
-                    end
-                    self.engine:set_animation_frame_speed(0)]]--
+                    supercub.pilot_formspec(name)
 	            elseif not self.driver_name then
                     --=========================
                     --  attach player

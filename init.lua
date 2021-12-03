@@ -34,6 +34,7 @@ dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_custom_physics
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_utilities.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_entities.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_manual.lua")
+dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_forms.lua")
 
 --
 -- helpers and co.
@@ -72,8 +73,13 @@ minetest.register_chatcommand("cub_eject", {
             if seat ~= nil then
                 local entity = seat:get_luaentity()
                 if entity then
-                    if entity.driver_name == name and entity.name == "supercub:supercub" then
-                        supercub.dettachPlayer(entity, player)
+                    if entity.name == "supercub:supercub" then
+                        if entity.driver_name == name then
+                            supercub.dettachPlayer(entity, player)
+                        elseif entity._passenger == name then
+                            local passenger = minetest.get_player_by_name(entity._passenger)
+                            supercub.dettach_pax(entity, passenger)
+                        end
                     else
 			            minetest.chat_send_player(name,colorstring)
                     end
