@@ -55,6 +55,8 @@ function supercub.physics(self)
     local acc_adjusted = 20
     if new_velocity.x > max_factor then new_velocity.x = acc_adjusted end
     if new_velocity.x < -max_factor then new_velocity.x = -acc_adjusted end
+    if new_velocity.y > max_factor then new_velocity.y = acc_adjusted end
+    if new_velocity.y < -max_factor then new_velocity.y = -acc_adjusted end
     if new_velocity.z > max_factor then new_velocity.z = acc_adjusted end
     if new_velocity.z < -max_factor then new_velocity.z = -acc_adjusted end
     -- end correction
