@@ -659,8 +659,8 @@ function supercub.flightstep(self)
     end
     if stop == false and is_flying == false then
         if longit_speed < -0.25 or longit_speed > 0 then
-            minetest.chat_send_all(longit_speed)
-            self.object:set_animation_frame_speed(longit_speed * 20)
+            --minetest.chat_send_all(longit_speed)
+            self.object:set_animation_frame_speed(longit_speed * 15)
         else
             self.object:set_animation_frame_speed(0)
         end
