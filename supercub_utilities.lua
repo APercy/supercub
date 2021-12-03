@@ -572,7 +572,7 @@ function supercub.flightstep(self)
 
     if is_flying == false then --isn't flying?
         --animate wheels
-        if math.abs(longit_speed) > 0.1 then
+        if math.abs(longit_speed) > 0.25 then
             self.object:set_animation_frame_speed(longit_speed * 8)
         else
             self.object:set_animation_frame_speed(0)
