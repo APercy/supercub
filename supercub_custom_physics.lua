@@ -67,7 +67,7 @@ function supercub.physics(self)
         
     else
         self.object:set_velocity(new_velocity)
-        self.object:set_acceleration(accell)
+        --self.object:set_acceleration(accell)
 	end
 
 end

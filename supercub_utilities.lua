@@ -539,7 +539,7 @@ function supercub.flightstep(self)
 
     -- pitch
     local speed_factor = 0
-    if longit_speed > supercub.min_speed then speed_factor = (velocity.y * math.rad(2)) end
+    if longit_speed > supercub.min_speed then speed_factor = (velocity.y * math.rad(1)) end
     local newpitch = math.rad(self._angle_of_attack) + speed_factor
 
 
