@@ -654,17 +654,22 @@ function supercub.flightstep(self)
         if stop == true then
             self.object:set_acceleration({x=0,y=0,z=0})
             self.object:set_velocity({x=0,y=0,z=0})
-            self.object:set_animation_frame_speed(0)
         end
     end
-    if stop == false and is_flying == false then
-        if longit_speed < -0.25 or longit_speed > 0 then
-            --minetest.chat_send_all(longit_speed)
+
+    if is_flying == false then --isn't flying?
+        --animate wheels
+        if math.abs(longit_speed) > 0.2 then
             self.object:set_animation_frame_speed(longit_speed * 15)
         else
             self.object:set_animation_frame_speed(0)
         end
+    else
+        --stop wheels
+        self.object:set_animation_frame_speed(0)
     end
+
+
 
     ------------------------------------------------------
     -- end accell
@@ -724,8 +729,8 @@ function supercub.flightstep(self)
     --self.rudder:set_attach(self.object,'',{x=0,y=0.12,z=-36.85},{x=0,y=self._rudder_angle,z=0})
     self.object:set_bone_position("rudder", {x=0,y=8.4,z=-36.85}, {x=0,y=self._rudder_angle,z=0})
     --adjust ailerons
-    self.object:set_bone_position("aileron.r", {x=30.377,y=8.08,z=-7}, {x=-self._rudder_angle - 90,y=0,z=0})
-    self.object:set_bone_position("aileron.l", {x=-30.377,y=8.08,z=-7}, {x=self._rudder_angle - 90,y=0,z=0})
+    self.object:set_bone_position("aileron.r", {x=30.377,y=8.2,z=-7}, {x=-self._rudder_angle - 90,y=0,z=0})
+    self.object:set_bone_position("aileron.l", {x=-30.377,y=8.2,z=-7}, {x=self._rudder_angle - 90,y=0,z=0})
     --set stick position
     self.stick:set_attach(self.object,'',{x=0,y=-6,85,z=8},{x=self._elevator_angle/2,y=0,z=self._rudder_angle})
 

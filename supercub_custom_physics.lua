@@ -34,6 +34,20 @@ function supercub.physics(self)
     local new_velocity = nil
 
     local accell = self._last_accell
+
+    --[[
+    accell correction
+    under some circunstances the acceleration exceeds the max value accepted by set_acceleration and
+    the game crashes with an overflow, so limiting the max acceleration in each axis prevents the crash
+    ]]--
+    local max_factor = 25
+    local acc_adjusted = 10
+    if accell.x > max_factor then accell.x = acc_adjusted end
+    if accell.x < -max_factor then accell.x = -acc_adjusted end
+    if accell.z > max_factor then accell.z = acc_adjusted end
+    if accell.z < -max_factor then accell.z = -acc_adjusted end
+    -- end correction
+
     accell.y = accell.y + mobkit.gravity
     self.water_drag = 0.1
 
@@ -44,6 +58,7 @@ function supercub.physics(self)
 
     new_velocity = vector.add(vel, vector.multiply(accell, self.dtime))
     self.object:set_pos(self.object:get_pos())
+
 		-- dumb friction
 	if self.isonground and not self.isinliquid then
 		self.object:set_velocity({x=new_velocity.x*friction,
