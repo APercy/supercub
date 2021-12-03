@@ -31,7 +31,7 @@ function supercub.physics(self)
 		self.object:set_velocity(vnew)
 	end
 	
-    local new_velocity = nil
+    local new_velocity = {x=0, y=0, z=0}
 
     local accell = self._last_accell
 

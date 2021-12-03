@@ -93,6 +93,7 @@ function supercub.attach(self, player, instructor_mode)
     end
     player:set_eye_offset({x = 0, y = -4, z = 2}, {x = 0, y = 1, z = -30})
     player_api.player_attached[name] = true
+    --player:set_physics_override({gravity = 0})
     -- make the driver sit
     minetest.after(0.2, function()
         player = minetest.get_player_by_name(name)
@@ -117,6 +118,7 @@ function supercub.attach_pax(self, player)
         player:set_eye_offset({x = 0, y = -2.5, z = 2}, {x = 0, y = 3, z = -30})
     end
     player_api.player_attached[name] = true
+    --player:set_physics_override({gravity = 0})
     -- make the driver sit
     minetest.after(0.2, function()
         player = minetest.get_player_by_name(name)
@@ -139,6 +141,7 @@ function supercub.dettachPlayer(self, player)
     self.driver_name = nil
 
     -- detach the player
+    --player:set_physics_override({speed = 1, jump = 1, gravity = 1, sneak = true})
     player:set_detach()
     player_api.player_attached[name] = nil
     player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
@@ -154,6 +157,7 @@ function supercub.dettach_pax(self, player)
     self._passenger = nil
 
     -- detach the player
+    --player:set_physics_override({speed = 1, jump = 1, gravity = 1, sneak = true})
     player:set_detach()
     player_api.player_attached[name] = nil
     player_api.set_animation(player, "stand")
