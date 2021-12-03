@@ -27,7 +27,7 @@ minetest.register_craftitem("supercub:supercub", {
 		pointed_pos.y=pointed_pos.y+3
 		local supercub = minetest.add_entity(pointed_pos, "supercub:supercub")
 		if supercub and placer then
-            local ent = hidro:get_luaentity()
+            local ent = supercub:get_luaentity()
             local owner = placer:get_player_name()
             ent.owner = owner
 			supercub:set_yaw(placer:get_look_horizontal())
