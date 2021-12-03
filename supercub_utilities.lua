@@ -565,18 +565,6 @@ function supercub.flightstep(self)
         end
     end
 
-    if is_flying == false then --isn't flying?
-        --animate wheels
-        if math.abs(longit_speed) > 0.15 then
-            self.object:set_animation_frame_speed(longit_speed * 20)
-        else
-            self.object:set_animation_frame_speed(0)
-        end
-    else
-        --stop wheels
-        self.object:set_animation_frame_speed(0)
-    end
-    
     -- new yaw
 	if math.abs(self._rudder_angle)>1.5 then
         local turn_rate = math.rad(14)
@@ -660,17 +648,44 @@ function supercub.flightstep(self)
     end
     -- end lift
 
-    if stop ~= true then
+    if stop ~= true then --maybe == nil
         self._last_accell = new_accel
     else
         if stop == true then
             self.object:set_acceleration({x=0,y=0,z=0})
             self.object:set_velocity({x=0,y=0,z=0})
+            self.object:set_animation_frame_speed(0)
         end
     end
+    if stop == false and is_flying == false then
+        if longit_speed < -0.25 or longit_speed > 0 then
+            minetest.chat_send_all(longit_speed)
+            self.object:set_animation_frame_speed(longit_speed * 20)
+        else
+            self.object:set_animation_frame_speed(0)
+        end
+    end
+
     ------------------------------------------------------
     -- end accell
     ------------------------------------------------------
+
+    --[[if is_flying == false then --isn't flying?
+        --animate wheels
+        if math.abs(longit_speed) > 0.15 then
+            minetest.chat_send_all('movimentando')
+            self.object:set_animation_frame_speed(longit_speed * 20)
+        else
+            minetest.chat_send_all('parado')
+            self.object:set_animation_frame_speed(0)
+        end
+    else
+        minetest.chat_send_all('voando')
+        --stop wheels
+        self.object:set_animation_frame_speed(0)
+    end]]--
+
+
 
     ------------------------------------------------------
     -- sound and animation
