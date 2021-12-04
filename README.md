@@ -1,11 +1,11 @@
-Minetest 5.4 mod: Hydroplane - Super Duck
+Minetest 5.4 mod: Super Cub
 ========================================
 
-The Super Duck
+The Super Cub
 
-This one tries to implement some flight, using the mobkit mod.
+Adapted from Super Duck, this is a pure lithoplane, based on Super Cub airplane.
 In order to fly, it is necessary to first supply the airplane with biofuel.
-Then with a bottle or gallon selected, punch it against the airplane floater.
+Then with a bottle or gallon selected, punch it against the airplane.
 You can use 10 bottles them to fill the tank. See the fuel gauge on the airplane
 panel (right below, with a green F). To embark, click with the right button.
 While the machine is off, it is possible to move it using the sneak and jump keys (shift an space).
@@ -56,9 +56,9 @@ It was limited at the source. You can modify it by your own, just making the rol
 
 **Chat Commands: **
 
-/hydro_eject - ejects from the vehicle
+/cub_eject - ejects from the vehicle
 
-/hydro_manual - shows the manual
+/cub_manual - shows the manual
 
 -----------------------
 License of source code:
