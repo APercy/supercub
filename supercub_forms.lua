@@ -35,25 +35,28 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             end
         end
 		if fields.go_out then
-            --=========================
-            --  dettach player
-            --=========================
-            -- eject passenger if the plane is on ground
-            local touching_ground, liquid_below = supercub.check_node_below(ent.object)
-            if ent.isinliquid or touching_ground or liquid_below then --isn't flying?
-                --ok, remove pax
-                if ent._passenger then
-                    local passenger = minetest.get_player_by_name(ent._passenger)
-                    if passenger then supercub.dettach_pax(ent, passenger) end
+            if is_on_ground then --or clicker:get_player_control().sneak then
+                if ent._passenger then --any pax?
+                    local pax_obj = minetest.get_player_by_name(ent._passenger)
+                    supercub.dettach_pax(ent, pax_obj)
                 end
+                ent._instruction_mode = false
+                --[[ sound and animation
+                if ent.sound_handle then
+                    minetest.sound_stop(ent.sound_handle)
+                    ent.sound_handle = nil
+                end
+                ent.engine:set_animation_frame_speed(0)]]--
             else
-                --give the control to the pax
+                -- not on ground
                 if ent._passenger then
+                    --give the control to the pax
                     ent._autopilot = false
                     supercub.transfer_control(ent, true)
+                    ent._command_is_given = true
+                    ent._instruction_mode = true
                 end
             end
-            ent._instruction_mode = false
             supercub.dettachPlayer(ent, player)
 		end
         minetest.close_formspec(name, "supercub:pilot_main")

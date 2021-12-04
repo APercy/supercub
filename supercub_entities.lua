@@ -385,6 +385,92 @@ minetest.register_entity("supercub:supercub", {
             self.owner = name
         end
 
+        local passenger_name = nil
+        if self._passenger then
+            passenger_name = self._passenger
+        end
+
+        local touching_ground, liquid_below = supercub.check_node_below(self.object)
+        local is_on_ground = self.isinliquid or touching_ground or liquid_below
+        local is_under_water = supercub.check_is_under_water(self.object)
+
+        --minetest.chat_send_all('name '.. dump(name) .. ' - pilot: ' .. dump(self.driver_name) .. ' - pax: ' .. dump(passenger_name))
+        --=========================
+        --  detach pilot
+        --=========================
+        if name == self.driver_name then
+            supercub.pilot_formspec(name)
+        --=========================
+        --  detach passenger
+        --=========================
+        elseif name == passenger_name then
+            if is_on_ground or clicker:get_player_control().sneak then
+                supercub.dettach_pax(self, clicker)
+            else
+                minetest.chat_send_player(name, "Hold sneak and right-click to disembark while flying")
+            end
+
+        --=========================
+        --  attach pilot
+        --=========================
+        elseif not self.driver_name then
+            if self.owner == name or minetest.check_player_privs(clicker, {protection_bypass=true}) then
+                if supercub.restricted == "true" and not minetest.check_player_privs(clicker, {flight_licence=true}) then
+                    minetest.show_formspec(name, "supercub:flightlicence",
+                        "size[4,2]" ..
+                        "label[0.0,0.0;Sorry ...]"..
+                        "label[0.0,0.7;You need a flight licence to fly it.]" ..
+                        "label[0.0,1.0;You must obtain it from server admin.]" ..
+                        "button_exit[1.5,1.9;0.9,0.1;e;Exit]")
+                    return
+                end
+
+                if is_under_water then return end
+                --remove pax to prevent bug
+                if self._passenger then 
+                    local pax_obj = minetest.get_player_by_name(self._passenger)
+                    supercub.dettach_pax(self, pax_obj)
+                end
+
+                --attach player
+                if clicker:get_player_control().sneak == true then
+                    -- flight instructor mode
+                    self._instruction_mode = true
+                    supercub.attach(self, clicker, true)
+                else
+                    -- no driver => clicker is new driver
+                    self._instruction_mode = false
+                    supercub.attach(self, clicker)
+                end
+                self._command_is_given = false
+            else
+                minetest.chat_send_player(name, core.colorize('#ff0000', " >>> You aren't the owner of this airplane."))
+            end
+
+        --=========================
+        --  attach passenger
+        --=========================
+        elseif self.driver_name and not self._passenger then
+            supercub.attach_pax(self, clicker)
+        
+        else
+            minetest.chat_send_player(name, core.colorize('#ff0000', " >>> Can't enter airplane."))
+        end
+
+
+
+
+
+		--[[if not clicker or not clicker:is_player() then
+			return
+		end
+
+        local name = clicker:get_player_name()
+
+        if self.owner == "" then
+            self.owner = name
+        end
+
         --check if is the owner
         if self.owner == name then
             -- pilot section
@@ -447,6 +533,6 @@ minetest.register_entity("supercub:supercub", {
             else
                 minetest.chat_send_player(clicker:get_player_name(), message)
             end
-        end
+        end]]--
 	end,
 })
