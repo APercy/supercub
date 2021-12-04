@@ -230,7 +230,7 @@ function supercub.autopilot(self, dtime, hull_direction, longit_speed, accel, cu
         local engineacc = (self._power_lever * supercub.max_engine_acc) / 100;
         --self.engine:set_animation_frame_speed(60 + self._power_lever)
 
-        local factor = math.abs(climb_rate * 0.5) --getAdjustFactor(curr_pos.y, self._auto_pilot_altitude)
+        local factor = math.abs(climb_rate * 0.1) --getAdjustFactor(curr_pos.y, self._auto_pilot_altitude)
         --increase power lever
         if climb_rate > 0.2 then
             supercub.powerAdjust(self, dtime, factor, -1)
