@@ -24,7 +24,7 @@ minetest.register_craftitem("supercub:supercub", {
         --local node_below = minetest.get_node(pointed_pos).name
         --local nodedef = minetest.registered_nodes[node_below]
         
-		pointed_pos.y=pointed_pos.y+3
+		pointed_pos.y=pointed_pos.y+1.5
 		local supercub = minetest.add_entity(pointed_pos, "supercub:supercub")
 		if supercub and placer then
             local ent = supercub:get_luaentity()
