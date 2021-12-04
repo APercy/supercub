@@ -102,9 +102,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if fields.op then
 			local text = {
 				"Operation \n\n",
-				"The aircraft can operate directly from the water or land.  \n",
-				"When operating on land the landing gear will  \n",
-				"automatically extend. \n",
+				"The aircraft can operate only on land.  \n",
 				"When boarding the aircraft, centralize the commands (A  \n",
 				"and D keys), press E to start the engine and hold Jump  \n",
 				"until full power. When the speed reaches the green range, \n",
@@ -112,14 +110,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				"speed within the green range to avoid stalling. To land, \n",
                 "remove all power, but keep the speed at the limit \n",
                 "between the green and white range. \n",
-                "When you are about to touch the soil or water, lightly pull \n",
+                "When you are about to touch the soil, lightly pull \n",
                 "the stick to level and touch it gently. It's possible to \n",
                 "operate with an external camera, activating the HUD. \n",
                 "The autopilot (jump and sneak) only keeps the airplane at the \n",
                 "activation level, limited by power and designed ceiling. \n",
                 "It's possible for a passenger to board the aircraft, just \n",
-                "click the right button on the floater. But the passenger \n",
-                "will only be able to enter if the pilot has already boarded."
+                "click the right the plane. But the passenger \n",
+                "will only be able to enter if the pilot has \n",
+                "already boarded."
 			}
 			local op_form = table.concat({
 				"formspec_version[3]",
@@ -153,10 +152,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "* The \"repair tool\" can repair damage suffered by the \n",
                 "    aircraft. To use it, have some steel ingots in the \n",
                 "    inventory, which will be subtracted for repair \n",
-                "* There is a turbo mode that can be used for long climbs, \n",
-                "    just hold the jump key. But be careful with the angle of \n",
-                "    attack, because even with full power it is not possible to \n",
-                "    climb with an angle of attack that is too high. \n",
 				"* When boarding as a flight instructor, use \n",
 				"    the external camera with the hud on. \n",
 				"* As an instructor, only pass control to the student at \n",
@@ -167,7 +162,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				"formspec_version[3]",
 				"size[16,10]",
 				"background[-0.7,-0.5;17.5,11.5;supercub_manual_bg.png]",
-				"label[0.5,0.5;", table.concat(text, ""), "]",
+				"label[0.2,0.5;", table.concat(text, ""), "]",
 			}, "")
 			minetest.show_formspec(player:get_player_name(), "supercub:tips", tips_form)
 		end

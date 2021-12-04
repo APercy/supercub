@@ -1,12 +1,12 @@
 -- wing
 minetest.register_craftitem("supercub:wings",{
 	description = "Supercub wings",
-	inventory_image = "wings.png",
+	inventory_image = "supercub_wings.png",
 })
 -- fuselage
 minetest.register_craftitem("supercub:fuselage",{
 	description = "Supercub fuselage",
-	inventory_image = "fuselage.png",
+	inventory_image = "supercub_fuselage.png",
 })
 
 -- trike
@@ -43,27 +43,38 @@ minetest.register_craftitem("supercub:supercub", {
 --
 
 if minetest.get_modpath("default") then
-	--[[minetest.register_craft({
-		output = "supercub:wings",
-		recipe = {
-			{"wool:white", "farming:string", "wool:white"},
-			{"group:wood", "group:wood", "group:wood"},
-			{"wool:white", "default:steel_ingot", "wool:white"},
-		}
-	})
-	minetest.register_craft({
-		output = "supercub:fuselage",
-		recipe = {
-			{"default:steel_ingot", "default:diamondblock", "default:steel_ingot"},
-			{"wool:white", "default:steel_ingot",  "wool:white"},
-			{"default:steel_ingot", "default:mese_block",   "default:steel_ingot"},
-		}
-	})
+    if not minetest.registered_items["hidroplane:wings"] then
+	    minetest.register_craft({
+		    output = "supercub:wings",
+		    recipe = {
+			    {"wool:white", "farming:string", "wool:white"},
+			    {"group:wood", "group:wood", "group:wood"},
+			    {"wool:white", "default:steel_ingot", "wool:white"},
+		    }
+	    })
+    end
+    if not minetest.registered_items["hidroplane:fuselage"] then
+	    minetest.register_craft({
+		    output = "supercub:fuselage",
+		    recipe = {
+			    {"default:steel_ingot", "default:diamondblock", "default:steel_ingot"},
+			    {"wool:white", "default:steel_ingot",  "wool:white"},
+			    {"default:steel_ingot", "default:mese_block",   "default:steel_ingot"},
+		    }
+	    })
+    end
 	minetest.register_craft({
 		output = "supercub:supercub",
 		recipe = {
 			{"supercub:wings",},
 			{"supercub:fuselage",},
 		}
-	})]]--
+	})
+	minetest.register_craft({
+		output = "supercub:supercub",
+		recipe = {
+			{"hidroplane:wings",},
+			{"hidroplane:fuselage",},
+		}
+	})
 end
