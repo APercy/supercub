@@ -35,7 +35,7 @@ function supercub.physics(self)
 
     local accell = self._last_accell
 
-    accell.y = accell.y + mobkit.gravity
+    --accell.y = accell.y + mobkit.gravity
     self.water_drag = 0.1
 
     mobkit.set_acceleration(self.object,{x=0,y=0,z=0})
@@ -44,7 +44,7 @@ function supercub.physics(self)
     --self.object:set_velocity(new_velocity)
 
     new_velocity = vector.add(vel, vector.multiply(accell, self.dtime))
-    self.object:set_pos(self.object:get_pos())
+    --self.object:set_pos(self.object:get_pos())
 
     --[[
     accell correction
@@ -69,7 +69,7 @@ function supercub.physics(self)
         
     else
         --self.object:set_velocity(new_velocity)
-        self.object:set_acceleration(accell)
+        --self.object:set_acceleration(accell)
 	end
 
 end

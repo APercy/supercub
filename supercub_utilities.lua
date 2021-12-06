@@ -307,7 +307,7 @@ function supercub.testImpact(self, velocity, position)
 		end
     end
 
-    if impact > 1 then
+    if impact > 1.2 then
         local noded = mobkit.nodeatpos(mobkit.pos_shift(p,{y=-2.8}))
 	    if (noded and noded.drawtype ~= 'airlike') then
             minetest.sound_play("supercub_touch", {
@@ -645,7 +645,7 @@ function supercub.flightstep(self)
     if accel == nil then accel = {x=0,y=0,z=0} end
 
     --lift calculation
-    --accel.y = accel_y --accel.y + mobkit.gravity --accel_y
+    accel.y = accel.y + mobkit.gravity --accel_y
 
     --lets apply some bob in water
 	if self.isinliquid then
@@ -666,6 +666,9 @@ function supercub.flightstep(self)
 
     if stop ~= true then --maybe == nil
         self._last_accell = new_accel
+	    self.object:set_pos(curr_pos)
+        self.object:set_velocity(velocity)
+        mobkit.set_acceleration(self.object, new_accel)
     else
         if stop == true then
             self.object:set_acceleration({x=0,y=0,z=0})
