@@ -2,7 +2,7 @@ supercub={}
 supercub.fuel = {['biofuel:biofuel'] = 1,['biofuel:bottle_fuel'] = 1,
                 ['biofuel:phial_fuel'] = 0.25, ['biofuel:fuel_can'] = 10}
 supercub.gravity = tonumber(minetest.settings:get("movement_gravity")) or 9.8
-supercub.wing_angle_of_attack = 3
+supercub.wing_angle_of_attack = 2
 supercub.min_speed = 6
 supercub.max_speed = 8
 supercub.max_engine_acc = 8 --4.5
