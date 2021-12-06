@@ -249,12 +249,14 @@ end
 function supercub.check_node_below(obj)
     local pos_below = obj:get_pos()
     if pos_below then
-        pos_below.y = pos_below.y - 2.5
+        pos_below.y = pos_below.y - 1.3
         local node_below = minetest.get_node(pos_below).name
+        --minetest.chat_send_all(dump(node_below))
         local nodedef = minetest.registered_nodes[node_below]
         local touching_ground = not nodedef or -- unknown nodes are solid
 		        nodedef.walkable or false
         local liquid_below = not touching_ground and nodedef.liquidtype ~= "none"
+        --minetest.chat_send_all(dump(touching_ground))
         return touching_ground, liquid_below
     end
     return nil, nil

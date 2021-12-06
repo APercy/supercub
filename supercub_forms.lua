@@ -35,6 +35,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             end
         end
 		if fields.go_out then
+            local touching_ground, liquid_below = supercub.check_node_below(plane_obj)
+            local is_on_ground = ent.isinliquid or touching_ground or liquid_below
+
             if is_on_ground then --or clicker:get_player_control().sneak then
                 if ent._passenger then --any pax?
                     local pax_obj = minetest.get_player_by_name(ent._passenger)
