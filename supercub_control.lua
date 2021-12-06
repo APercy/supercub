@@ -157,8 +157,11 @@ end
 function supercub.set_pitch(self, dir, dtime)
     local pitch_factor = 6
 	if dir == -1 then
+        --minetest.chat_send_all("cabrando")
+        if self._elevator_angle > 0 then pitch_factor = pitch_factor * 2 end
 		self._elevator_angle = math.max(self._elevator_angle-pitch_factor*dtime,-supercub.elevator_limit)
 	elseif dir == 1 then
+        --minetest.chat_send_all("picando")
         if self._angle_of_attack < 0 then pitch_factor = 1 end --lets reduce the command power to avoid accidents
 		self._elevator_angle = math.min(self._elevator_angle+pitch_factor*dtime,supercub.elevator_limit)
 	end
