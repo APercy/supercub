@@ -6,7 +6,7 @@ supercub.wing_angle_of_attack = 2
 supercub.min_speed = 6
 supercub.max_speed = 8
 supercub.max_engine_acc = 8 --4.5
-supercub.lift = 10 --12
+supercub.lift = 9 --12
 
 supercub.colors ={
     black='#2b2b2b',
