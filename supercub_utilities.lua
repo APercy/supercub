@@ -307,6 +307,20 @@ function supercub.testImpact(self, velocity, position)
 		end
     end
 
+    if impact > 1 then
+        local noded = mobkit.nodeatpos(mobkit.pos_shift(p,{y=-2.8}))
+	    if (noded and noded.drawtype ~= 'airlike') then
+            minetest.sound_play("supercub_touch", {
+                --to_player = self.driver_name,
+                object = self.object,
+                max_hear_distance = 15,
+                gain = 1.0,
+                fade = 0.0,
+                pitch = 1.0,
+            }, true)
+	    end
+    end
+
     if collision then
         --self.object:set_velocity({x=0,y=0,z=0})
         local damage = impact / 2

@@ -68,8 +68,8 @@ function supercub.physics(self)
 								z=new_velocity.z*friction})
         
     else
-        self.object:set_velocity(new_velocity)
-        --self.object:set_acceleration(accell)
+        --self.object:set_velocity(new_velocity)
+        self.object:set_acceleration(accell)
 	end
 
 end
