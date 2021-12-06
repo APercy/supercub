@@ -190,7 +190,7 @@ function supercub.elevator_auto_correction(self, longit_speed, dtime)
     local factor = 1
     --if self._elevator_angle > -1.5 then factor = -1 end --here is the "compensator" adjusto to keep it stable
     if self._elevator_angle > 0 then factor = -1 end
-    local correction = (supercub.elevator_limit*(longit_speed/10000)) * factor * (dtime/supercub.ideal_step)
+    local correction = (supercub.elevator_limit*(longit_speed/5000)) * factor * (dtime/supercub.ideal_step)
     local before_correction = self._elevator_angle
     local new_elevator_angle = self._elevator_angle + correction
     if math.sign(before_correction) ~= math.sign(new_elevator_angle) then

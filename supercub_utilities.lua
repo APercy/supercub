@@ -710,7 +710,7 @@ function supercub.flightstep(self)
     end
 
     --is an stall, force a recover
-    if self._angle_of_attack > 3 and climb_rate < -2.8 then
+    if self._angle_of_attack > 3 and climb_rate < -3.5 then
         self._elevator_angle = 0
         self._angle_of_attack = -1
         newpitch = math.rad(self._angle_of_attack)
@@ -720,7 +720,7 @@ function supercub.flightstep(self)
     local climb_angle = supercub.get_gauge_angle(climb_rate)
     self.climb_gauge:set_attach(self.object,'',SUPERCUB_GAUGE_CLIMBER_POSITION,{x=0,y=0,z=climb_angle})
 
-    local indicated_speed = longit_speed
+    local indicated_speed = longit_speed * 0.8
     if indicated_speed < 0 then indicated_speed = 0 end
     local speed_angle = supercub.get_gauge_angle(indicated_speed, -45)
     self.speed_gauge:set_attach(self.object,'',SUPERCUB_GAUGE_SPEED_POSITION,{x=0,y=0,z=speed_angle})
