@@ -155,7 +155,7 @@ function supercub.control(self, dtime, hull_direction, longit_speed, longit_drag
 end
 
 function supercub.set_pitch(self, dir, dtime)
-    local pitch_factor = 5.5
+    local pitch_factor = 6
 	if dir == -1 then
 		self._elevator_angle = math.max(self._elevator_angle-pitch_factor*dtime,-supercub.elevator_limit)
 	elseif dir == 1 then
