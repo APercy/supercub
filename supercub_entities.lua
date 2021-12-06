@@ -442,6 +442,8 @@ minetest.register_entity("supercub:supercub", {
                     self._instruction_mode = false
                     supercub.attach(self, clicker)
                 end
+                self._elevator_angle = 0
+                self._rudder_angle = 0
                 self._command_is_given = false
             else
                 minetest.chat_send_player(name, core.colorize('#ff0000', " >>> You aren't the owner of this airplane."))
