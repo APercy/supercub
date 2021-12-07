@@ -307,7 +307,7 @@ function supercub.testImpact(self, velocity, position)
 		end
     end
 
-    if impact > 1.2 then
+    if impact > 1.2  and self._longit_speed > 2 then
         local noded = mobkit.nodeatpos(mobkit.pos_shift(p,{y=-2.8}))
 	    if (noded and noded.drawtype ~= 'airlike') then
             minetest.sound_play("supercub_touch", {
