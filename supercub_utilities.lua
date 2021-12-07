@@ -710,7 +710,7 @@ function supercub.flightstep(self)
     end
 
     --is an stall, force a recover
-    if self._angle_of_attack > 3 and climb_rate < -3 then
+    if self._angle_of_attack > 3 and climb_rate < -3.5 then
         self._elevator_angle = 0
         self._angle_of_attack = -1
         newpitch = math.rad(self._angle_of_attack)
