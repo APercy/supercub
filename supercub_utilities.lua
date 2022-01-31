@@ -112,7 +112,7 @@ function supercub.attach(self, player, instructor_mode)
         player:set_attach(self.pilot_seat_base, "", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
     end
     if supercub.detect_player_api(player) == 1 then
-        eye_y = eye_y + 6
+        eye_y = eye_y + 6.5
     end
 
     player:set_eye_offset({x = 0, y = eye_y, z = 2}, {x = 0, y = 1, z = -30})
@@ -134,17 +134,23 @@ function supercub.attach_pax(self, player)
     self._passenger = name
 
     -- attach the driver
+    local eye_y = 0
     if self._instruction_mode == true then
+        eye_y = -4
         player:set_attach(self.pilot_seat_base, "", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
-        player:set_eye_offset({x = 0, y = -4, z = 2}, {x = 0, y = 3, z = -30})
     else
+        eye_y = -2.5
         player:set_attach(self.passenger_seat_base, "", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
-        player:set_eye_offset({x = 0, y = -2.5, z = 2}, {x = 0, y = 3, z = -30})
     end
+    if supercub.detect_player_api(player) == 1 then
+        eye_y = eye_y + 6.5
+    end
+
+    player:set_eye_offset({x = 0, y = eye_y, z = 2}, {x = 0, y = 1, z = -30})
     player_api.player_attached[name] = true
     --player:set_physics_override({gravity = 0})
     -- make the driver sit
-    minetest.after(0.2, function()
+    minetest.after(0.3, function()
         player = minetest.get_player_by_name(name)
         if player then
 	        player_api.set_animation(player, "sit")
