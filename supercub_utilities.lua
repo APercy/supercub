@@ -668,7 +668,7 @@ function supercub.flightstep(self)
 
     if stop ~= true then --maybe == nil
         self._last_accell = new_accel
-	    self.object:set_pos(curr_pos)
+	    self.object:move_to(curr_pos)
         self.object:set_velocity(velocity)
         mobkit.set_acceleration(self.object, new_accel)
     else
