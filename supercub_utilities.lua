@@ -17,83 +17,12 @@ function supercub.minmax(v,m)
 	return math.min(math.abs(v),m)*supercub.sign(v)
 end
 
---lift
-local function pitchroll2pitchyaw(aoa,roll)
-	if roll == 0.0 then return aoa,0 end
-	-- assumed vector x=0,y=0,z=1
-	local p1 = math.tan(aoa)
-	local y = math.cos(roll)*p1
-	local x = math.sqrt(p1^2-y^2)
-	local pitch = math.atan(y)
-	local yaw=math.atan(x)*math.sign(roll)
-	return pitch,yaw
-end
-
-function supercub.getLiftAccel(self, velocity, accel, longit_speed, roll, curr_pos)
-    --lift calculations
-    -----------------------------------------------------------
-    local max_height = 15000
-    
-    local retval = accel
-    if longit_speed > 1 then
-        local angle_of_attack = math.rad(self._angle_of_attack + supercub.wing_angle_of_attack)
-        local lift = supercub.lift
-        --local acc = 0.8
-        local daoa = deg(angle_of_attack)
-
-        --to decrease the lift coefficient at hight altitudes
-        local curr_percent_height = (100 - ((curr_pos.y * 100) / max_height))/100
-
-	    local rotation=self.object:get_rotation()
-	    local vrot = mobkit.dir_to_rot(velocity,rotation)
-	    
-	    local hpitch,hyaw = pitchroll2pitchyaw(angle_of_attack,roll)
-
-	    local hrot = {x=vrot.x+hpitch,y=vrot.y-hyaw,z=roll}
-	    local hdir = mobkit.rot_to_dir(hrot) --(hrot)
-	    local cross = vector.cross(velocity,hdir)
-	    local lift_dir = vector.normalize(vector.cross(cross,hdir))
-
-        local lift_coefficient = (0.24*abs(daoa)*(1/(0.025*daoa+3))^4*math.sign(angle_of_attack))
-        local lift_val = math.abs((lift*(vector.length(velocity)^2)*lift_coefficient)*curr_percent_height)
-        --minetest.chat_send_all('lift: '.. lift_val)
-
-        local lift_acc = vector.multiply(lift_dir,lift_val)
-        --lift_acc=vector.add(vector.multiply(minetest.yaw_to_dir(rotation.y),acc),lift_acc)
-
-        retval = vector.add(retval,lift_acc)
-    end
-    -----------------------------------------------------------
-    -- end lift
-    return retval
-end
-
-
 function supercub.get_gauge_angle(value, initial_angle)
     initial_angle = initial_angle or 90
     local angle = value * 18
     angle = angle - initial_angle
     angle = angle * -1
 	return angle
-end
-
---returns 0 for old, 1 for new
-function supercub.detect_player_api(player)
-    local player_proterties = player:get_properties()
-    local mesh = "character.b3d"
-    if player_proterties.mesh == mesh then
-        local models = player_api.registered_models
-        local character = models[mesh]
-        if character then
-            if character.animations.sit.eye_height then
-                return 1
-            else
-                return 0
-            end
-        end
-    end
-
-    return 0
 end
 
 -- attach player
@@ -111,7 +40,7 @@ function supercub.attach(self, player, instructor_mode)
         eye_y = -4
         player:set_attach(self.pilot_seat_base, "", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
     end
-    if supercub.detect_player_api(player) == 1 then
+    if airutils.detect_player_api(player) == 1 then
         eye_y = eye_y + 6.5
     end
 
@@ -142,7 +71,7 @@ function supercub.attach_pax(self, player)
         eye_y = -2.5
         player:set_attach(self.passenger_seat_base, "", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
     end
-    if supercub.detect_player_api(player) == 1 then
+    if airutils.detect_player_api(player) == 1 then
         eye_y = eye_y + 6.5
     end
 
@@ -161,7 +90,7 @@ end
 
 function supercub.dettachPlayer(self, player)
     local name = self.driver_name
-    supercub.setText(self)
+    airutils.setText(self, "Super Cub")
 
     supercub.remove_hud(player)
 
@@ -278,33 +207,6 @@ function supercub.destroy(self)
     --minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'hidroplane:hidro')
 end
 
-function supercub.check_node_below(obj)
-    local pos_below = obj:get_pos()
-    if pos_below then
-        pos_below.y = pos_below.y - 1.3
-        local node_below = minetest.get_node(pos_below).name
-        --minetest.chat_send_all(dump(node_below))
-        local nodedef = minetest.registered_nodes[node_below]
-        local touching_ground = not nodedef or -- unknown nodes are solid
-		        nodedef.walkable or false
-        local liquid_below = not touching_ground and nodedef.liquidtype ~= "none"
-        --minetest.chat_send_all(dump(touching_ground))
-        return touching_ground, liquid_below
-    end
-    return nil, nil
-end
-
-function supercub.setText(self)
-    local properties = self.object:get_properties()
-    local formatted = string.format(
-       "%.2f", self.hp_max
-    )
-    if properties then
-        properties.infotext = "Nice supercub of " .. self.owner .. ". Current hp: " .. formatted
-        self.object:set_properties(properties)
-    end
-end
-
 function supercub.testImpact(self, velocity, position)
     local p = position --self.object:get_pos()
     local collision = false
@@ -368,7 +270,7 @@ function supercub.testImpact(self, velocity, position)
 
         if self.driver_name then
             local player_name = self.driver_name
-            supercub.setText(self)
+            airutils.setText(self, "Super Cub")
 
             --minetest.chat_send_all('damage: '.. damage .. ' - hp: ' .. self.hp_max)
             if self.hp_max < 0 then --if acumulated damage is greater than 50, adieu
@@ -408,39 +310,9 @@ function supercub.checkattachBug(self)
         else
             if self._passenger ~= nil and self._command_is_given == false then
                 self._autopilot = false
-                supercub.transfer_control(self, true)
+                airutils.transfer_control(self, true)
             end
         end
-    end
-end
-
-function supercub.check_is_under_water(obj)
-	local pos_up = obj:get_pos()
-	pos_up.y = pos_up.y + 0.1
-	local node_up = minetest.get_node(pos_up).name
-	local nodedef = minetest.registered_nodes[node_up]
-	local liquid_up = nodedef.liquidtype ~= "none"
-	return liquid_up
-end
-
-function supercub.transfer_control(self, status)
-    if status == false then
-        self._command_is_given = false
-        if self._passenger then
-            minetest.chat_send_player(self._passenger,
-                core.colorize('#ff0000', " >>> The flight instructor got the control."))
-        end
-        if self.driver_name then
-            minetest.chat_send_player(self.driver_name,
-                core.colorize('#00ff00', " >>> The control is with you now."))
-        end
-    else
-        self._command_is_given = true
-        if self._passenger then
-            minetest.chat_send_player(self._passenger,
-                core.colorize('#00ff00', " >>> The control is with you now."))
-        end
-        if self.driver_name then minetest.chat_send_player(self.driver_name," >>> The control was given.") end
     end
 end
 
@@ -497,13 +369,13 @@ function supercub.flightstep(self)
                 if ctrl.sneak or ctrl.jump or ctrl.up or ctrl.down or ctrl.right or ctrl.left then
                     self._last_time_command = 0
                     --take the control
-                    supercub.transfer_control(self, false)
+                    airutils.transfer_control(self, false)
                 end
             else
                 if ctrl.sneak == true and ctrl.jump == true then
                     self._last_time_command = 0
                     --trasnfer the control to student
-                    supercub.transfer_control(self, true)
+                    airutils.transfer_control(self, true)
                 end
             end
         end
@@ -692,7 +564,7 @@ function supercub.flightstep(self)
 
     local new_accel = accel
     if longit_speed > 1.5 then
-        new_accel = supercub.getLiftAccel(self, velocity, new_accel, longit_speed, roll, curr_pos)
+        new_accel = airutils.getLiftAccel(self, velocity, new_accel, longit_speed, roll, curr_pos, supercub.lift, 15000)
     end
     -- end lift
 
@@ -742,7 +614,7 @@ function supercub.flightstep(self)
     end
 
     --is an stall, force a recover
-    if self._angle_of_attack > 3 and climb_rate < -3.5 then
+    if self._angle_of_attack > 3.5 and climb_rate < -3.5 then
         self._elevator_angle = 0
         self._angle_of_attack = -1
         newpitch = math.rad(self._angle_of_attack)

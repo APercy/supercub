@@ -35,7 +35,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             end
         end
 		if fields.go_out then
-            local touching_ground, liquid_below = supercub.check_node_below(plane_obj)
+            local touching_ground, liquid_below = airutils.check_node_below(plane_obj, 1.3)
             local is_on_ground = ent.isinliquid or touching_ground or liquid_below
 
             if is_on_ground then --or clicker:get_player_control().sneak then
@@ -55,7 +55,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 if ent._passenger then
                     --give the control to the pax
                     ent._autopilot = false
-                    supercub.transfer_control(ent, true)
+                    airutils.transfer_control(ent, true)
                     ent._command_is_given = true
                     ent._instruction_mode = true
                 end

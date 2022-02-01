@@ -6,17 +6,6 @@ supercub.elevator_limit = 40
 
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_utilities.lua")
 
-function supercub.check_node_below(obj)
-	local pos_below = obj:get_pos()
-	pos_below.y = pos_below.y - 0.1
-	local node_below = minetest.get_node(pos_below).name
-	local nodedef = minetest.registered_nodes[node_below]
-	local touching_ground = not nodedef or -- unknown nodes are solid
-			nodedef.walkable or false
-	local liquid_below = not touching_ground and nodedef.liquidtype ~= "none"
-	return touching_ground, liquid_below
-end
-
 function supercub.powerAdjust(self,dtime,factor,dir,max_power)
     local max = max_power or 100
     local add_factor = factor/2

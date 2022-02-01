@@ -170,6 +170,7 @@ minetest.register_entity("supercub:supercub", {
     _auto_pilot_altitude = 0,
     _last_accell = {x=0,y=0,z=0},
     _last_time_command = 1,
+    _wing_configuration = supercub.wing_angle_of_attack,
 
     get_staticdata = function(self) -- unloaded/unloads ... is now saved
         return minetest.serialize({
@@ -203,7 +204,7 @@ minetest.register_entity("supercub:supercub", {
                 self._last_applied_power = -1 --signal to start
             end
         end
-        supercub.setText(self)
+        airutils.setText(self, "Super Cub")
         self.object:set_animation({x = 1, y = 12}, 0, 0, true)
 
         local pos = self.object:get_pos()
@@ -324,7 +325,7 @@ minetest.register_entity("supercub:supercub", {
                         inv:remove_item("main", stack)
                         self.hp_max = self.hp_max + 10
                         if self.hp_max > 50 then self.hp_max = 50 end
-                        supercub.setText(self)
+                        airutils.setText(self, "Super Cub")
                     else
                         minetest.chat_send_player(puncher:get_player_name(), "You need steel ingots in your inventory to perform this repair.")
                     end
@@ -361,7 +362,7 @@ minetest.register_entity("supercub:supercub", {
                             fade = 0.0,
                             pitch = 1.0,
                         })
-                        supercub.setText(self)
+                        airutils.setText(self, "Super Cub")
 				    end
 			    end
             end
@@ -390,9 +391,9 @@ minetest.register_entity("supercub:supercub", {
             passenger_name = self._passenger
         end
 
-        local touching_ground, liquid_below = supercub.check_node_below(self.object)
+        local touching_ground, liquid_below = airutils.check_node_below(self.object, 1.3)
         local is_on_ground = self.isinliquid or touching_ground or liquid_below
-        local is_under_water = supercub.check_is_under_water(self.object)
+        local is_under_water = airutils.check_is_under_water(self.object)
 
         --minetest.chat_send_all('name '.. dump(name) .. ' - pilot: ' .. dump(self.driver_name) .. ' - pax: ' .. dump(passenger_name))
         --=========================
