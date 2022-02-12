@@ -247,7 +247,7 @@ minetest.register_entity("supercub:supercub", {
 	    stick:set_attach(self.object,'',{x=0,y=-6.85,z=8},{x=0,y=0,z=0})
 	    self.stick = stick
 
-        supercub.paint(self, self.object, self._color, "supercub_painting.png")
+        airutils.paint(self, self._color, "supercub_painting.png")
 
 		self.object:set_armor_groups({immortal=1})
 	end,
@@ -335,21 +335,8 @@ minetest.register_entity("supercub:supercub", {
 
             -- deal with painting or destroying
 		    if itmstck then
-			    local _,indx = item_name:find('dye:')
-			    if indx then
 
-                    --lets paint!!!!
-				    local color = item_name:sub(indx+1)
-				    local colstr = supercub.colors[color]
-                    --minetest.chat_send_all(color ..' '.. dump(colstr))
-				    if colstr then
-                        supercub.paint(self, self.object, colstr, "supercub_painting.png")
-					    itmstck:set_count(itmstck:get_count()-1)
-					    puncher:set_wielded_item(itmstck)
-				    end
-                    -- end painting
-
-			    else -- deal damage
+			    if airutils.set_paint(self, puncher, itmstck, "supercub_painting.png") == false then
 				    if not self.driver and toolcaps and toolcaps.damage_groups
                             and toolcaps.damage_groups.fleshy and item_name ~= supercub.fuel then
 					    --mobkit.hurt(self,toolcaps.damage_groups.fleshy - 1)
