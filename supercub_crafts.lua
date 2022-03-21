@@ -10,7 +10,7 @@ minetest.register_craftitem("supercub:fuselage",{
 	inventory_image = "supercub_fuselage.png",
 })
 
--- trike
+-- supercub
 minetest.register_craftitem("supercub:supercub", {
 	description = "Super Cub",
 	inventory_image = "supercub.png",
@@ -26,14 +26,14 @@ minetest.register_craftitem("supercub:supercub", {
         --local nodedef = minetest.registered_nodes[node_below]
         
 		pointed_pos.y=pointed_pos.y+2.5
-		local supercub = minetest.add_entity(pointed_pos, "supercub:supercub")
-		if supercub and placer then
-            local ent = supercub:get_luaentity()
+		local supercub_ent = minetest.add_entity(pointed_pos, "supercub:supercub")
+		if supercub_ent and placer then
+            local ent = supercub_ent:get_luaentity()
             local owner = placer:get_player_name()
             ent.owner = owner
-			supercub:set_yaw(placer:get_look_horizontal())
+			supercub_ent:set_yaw(placer:get_look_horizontal())
 			itemstack:take_item()
-            automobiles_lib.create_inventory(ent, supercub.trunk_slots, owner)
+            airutils.create_inventory(ent, supercub.trunk_slots, owner)
 		end
 
 		return itemstack
