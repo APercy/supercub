@@ -1,15 +1,15 @@
+
+
 supercub={}
-supercub.fuel = {['biofuel:biofuel'] = 1,['biofuel:bottle_fuel'] = 1,
-                ['biofuel:phial_fuel'] = 0.25, ['biofuel:fuel_can'] = 10}
 supercub.gravity = tonumber(minetest.settings:get("movement_gravity")) or 9.8
 supercub.wing_angle_of_attack = 1.5
 supercub.min_speed = 6
 supercub.max_speed = 8
-supercub.max_engine_acc = 7.5 --4.5
-supercub.lift = 10 --12
+supercub.max_engine_acc = 7.5
+supercub.lift = 10
+supercub.trunk_slots = 16
 
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_global_definitions.lua")
-dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_crafts.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_control.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_fuel_management.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_custom_physics.lua")
@@ -17,6 +17,7 @@ dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_utilities.lua"
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_entities.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_manual.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_forms.lua")
+dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_crafts.lua")
 
 --
 -- helpers and co.

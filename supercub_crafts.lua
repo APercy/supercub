@@ -1,3 +1,4 @@
+
 -- wing
 minetest.register_craftitem("supercub:wings",{
 	description = "Supercub wings",
@@ -32,6 +33,7 @@ minetest.register_craftitem("supercub:supercub", {
             ent.owner = owner
 			supercub:set_yaw(placer:get_look_horizontal())
 			itemstack:take_item()
+            automobiles_lib.create_inventory(ent, roadster.trunk_slots, owner)
 		end
 
 		return itemstack

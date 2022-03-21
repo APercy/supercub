@@ -171,6 +171,8 @@ minetest.register_entity("supercub:supercub", {
     _last_accell = {x=0,y=0,z=0},
     _last_time_command = 1,
     _wing_configuration = supercub.wing_angle_of_attack,
+    _inv = nil,
+    _inv_id = "",
 
     get_staticdata = function(self) -- unloaded/unloads ... is now saved
         return minetest.serialize({
@@ -183,8 +185,13 @@ minetest.register_entity("supercub:supercub", {
             stored_driver_name = self.driver_name,
             stored_last_accell = self._last_accell,
             stored_engine_running = self._engine_running,
+            stored_inv_id = self._inv_id,
         })
     end,
+
+	on_deactivate = function(self)
+        airutils.save_inventory(self)
+	end,
 
 	on_activate = function(self, staticdata, dtime_s)
         mobkit.actfunc(self, staticdata, dtime_s)
@@ -198,6 +205,7 @@ minetest.register_entity("supercub:supercub", {
             self.driver_name = data.stored_driver_name
             self._last_accell = data.stored_last_accell
             self._engine_running = data.stored_engine_running
+            self._inv_id = data.stored_inv_id
             --self.sound_handle = data.stored_sound_handle
             --minetest.debug("loaded: ", self._energy)
             if self._engine_running then
@@ -250,6 +258,14 @@ minetest.register_entity("supercub:supercub", {
         airutils.paint(self, self._color, "supercub_painting.png")
 
 		self.object:set_armor_groups({immortal=1})
+
+		local inv = minetest.get_inventory({type = "detached", name = self._inv_id})
+		-- if the game was closed the inventories have to be made anew, instead of just reattached
+		if not inv then
+            airutils.create_inventory(self, supercub.trunk_slots)
+		else
+		    self.inv = inv
+        end
 	end,
 
     --on_step = mobkit.stepfunc,
@@ -338,7 +354,7 @@ minetest.register_entity("supercub:supercub", {
 
 			    if airutils.set_paint(self, puncher, itmstck, "supercub_painting.png") == false then
 				    if not self.driver and toolcaps and toolcaps.damage_groups
-                            and toolcaps.damage_groups.fleshy and item_name ~= supercub.fuel then
+                            and toolcaps.damage_groups.fleshy and item_name ~= airutils.fuel then
 					    --mobkit.hurt(self,toolcaps.damage_groups.fleshy - 1)
 					    --mobkit.make_sound(self,'hit')
                         self.hp_max = self.hp_max - 10
@@ -426,9 +442,13 @@ minetest.register_entity("supercub:supercub", {
                     self._instruction_mode = true
                     supercub.attach(self, clicker, true)
                 else
-                    -- no driver => clicker is new driver
-                    self._instruction_mode = false
-                    supercub.attach(self, clicker)
+                    if clicker:get_player_control().aux1 == true then --lets see the inventory
+                        airutils.show_vehicle_trunk_formspec(self, clicker, supercub.trunk_slots)
+                    else
+                        -- no driver => clicker is new driver
+                        self._instruction_mode = false
+                        supercub.attach(self, clicker)
+                    end
                 end
                 self._elevator_angle = 0
                 self._rudder_angle = 0
