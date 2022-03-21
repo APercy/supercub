@@ -358,7 +358,7 @@ minetest.register_entity("supercub:supercub", {
 					    --mobkit.hurt(self,toolcaps.damage_groups.fleshy - 1)
 					    --mobkit.make_sound(self,'hit')
                         self.hp_max = self.hp_max - 10
-                        minetest.sound_play("collision", {
+                        minetest.sound_play("supercub_collision", {
 	                        object = self.object,
 	                        max_hear_distance = 5,
 	                        gain = 1.0,
