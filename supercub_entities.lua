@@ -419,40 +419,40 @@ minetest.register_entity("supercub:supercub", {
         --=========================
         elseif not self.driver_name then
             if self.owner == name or minetest.check_player_privs(clicker, {protection_bypass=true}) then
-                if supercub.restricted == "true" and not minetest.check_player_privs(clicker, {flight_licence=true}) then
-                    minetest.show_formspec(name, "supercub:flightlicence",
-                        "size[4,2]" ..
-                        "label[0.0,0.0;Sorry ...]"..
-                        "label[0.0,0.7;You need a flight licence to fly it.]" ..
-                        "label[0.0,1.0;You must obtain it from server admin.]" ..
-                        "button_exit[1.5,1.9;0.9,0.1;e;Exit]")
-                    return
-                end
-
-                if is_under_water then return end
-                --remove pax to prevent bug
-                if self._passenger then 
-                    local pax_obj = minetest.get_player_by_name(self._passenger)
-                    supercub.dettach_pax(self, pax_obj)
-                end
-
-                --attach player
-                if clicker:get_player_control().sneak == true then
-                    -- flight instructor mode
-                    self._instruction_mode = true
-                    supercub.attach(self, clicker, true)
+                if clicker:get_player_control().aux1 == true then --lets see the inventory
+                    airutils.show_vehicle_trunk_formspec(self, clicker, supercub.trunk_slots)
                 else
-                    if clicker:get_player_control().aux1 == true then --lets see the inventory
-                        airutils.show_vehicle_trunk_formspec(self, clicker, supercub.trunk_slots)
+                    if supercub.restricted == "true" and not minetest.check_player_privs(clicker, {flight_licence=true}) then
+                        minetest.show_formspec(name, "supercub:flightlicence",
+                            "size[4,2]" ..
+                            "label[0.0,0.0;Sorry ...]"..
+                            "label[0.0,0.7;You need a flight licence to fly it.]" ..
+                            "label[0.0,1.0;You must obtain it from server admin.]" ..
+                            "button_exit[1.5,1.9;0.9,0.1;e;Exit]")
+                        return
+                    end
+
+                    if is_under_water then return end
+                    --remove pax to prevent bug
+                    if self._passenger then 
+                        local pax_obj = minetest.get_player_by_name(self._passenger)
+                        supercub.dettach_pax(self, pax_obj)
+                    end
+
+                    --attach player
+                    if clicker:get_player_control().sneak == true then
+                        -- flight instructor mode
+                        self._instruction_mode = true
+                        supercub.attach(self, clicker, true)
                     else
                         -- no driver => clicker is new driver
                         self._instruction_mode = false
                         supercub.attach(self, clicker)
                     end
+                    self._elevator_angle = 0
+                    self._rudder_angle = 0
+                    self._command_is_given = false
                 end
-                self._elevator_angle = 0
-                self._rudder_angle = 0
-                self._command_is_given = false
             else
                 minetest.chat_send_player(name, core.colorize('#ff0000', " >>> You aren't the owner of this airplane."))
             end
