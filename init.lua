@@ -7,7 +7,7 @@ supercub.min_speed = 6
 supercub.max_speed = 8
 supercub.max_engine_acc = 7.5
 supercub.lift = 10
-supercub.trunk_slots = 16
+supercub.trunk_slots = 12
 
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_global_definitions.lua")
 dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_control.lua")
