@@ -16,11 +16,12 @@ end
 function supercub.pilot_formspec(name)
     local basic_form = table.concat({
         "formspec_version[3]",
-        "size[6,4.5]",
+        "size[6,6]",
 	}, "")
 
 	basic_form = basic_form.."button[1,1.0;4,1;go_out;Go Offboard]"
 	basic_form = basic_form.."button[1,2.5;4,1;hud;Show/Hide Gauges]"
+    basic_form = basic_form.."button[1,4.0;4,1;manual;Show Manual]"
 
     minetest.show_formspec(name, "supercub:pilot_main", basic_form)
 end
@@ -66,6 +67,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 end
                 supercub.dettachPlayer(ent, player)
 		    end
+            if fields.manual then
+                supercub.manual_formspec(name)
+            end
         end
         minetest.close_formspec(name, "supercub:pilot_main")
     end

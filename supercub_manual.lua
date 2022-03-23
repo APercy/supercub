@@ -28,8 +28,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				"Shortcuts \n\n",
                 "* Right click: enter in/get off plane \n",
                 "* Left click (with biofuel): add fuel to plane \n",
-                "* Right click and Sneak: enter in flight instructor mode (limited \n",
-                "      vision, so use external camera) \n",
+                "* Right click and Sneak: enter in flight instructor mode \n",
+                "      (limited vision, so use external camera) \n",
                 "* E (aux1): Start/stop engine \n",
                 "* Jump: Increase power, forward on ground \n",
                 "* Sneak: Decrease power, brake on ground \n",
@@ -40,7 +40,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "* Sneak and Jump together (normal): activates the autopilot \n",
                 "* Sneak and Jump together (instruction mode): give/take the \n",
                 "      controls to/from pilot student \n",
-                "* Up and Down together: enable/disable HUD"
+                "* Up and Down together: enable/disable HUD \n",
+                "* E and Right click: inventory (only external) \n"
 			}
 			local shortcut_form = table.concat({
 				"formspec_version[3]",
