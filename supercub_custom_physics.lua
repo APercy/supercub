@@ -8,9 +8,10 @@ function supercub.physics(self)
 	local vel=self.object:get_velocity()
 		-- dumb friction
 	if self.isonground and not self.isinliquid then
-		self.object:set_velocity({x=vel.x*friction,
+        vel = {x=vel.x*friction,
 								y=vel.y,
-								z=vel.z*friction})
+								z=vel.z*friction}
+		self.object:set_velocity(vel)
 	end
 	
 	-- bounciness
