@@ -49,8 +49,8 @@ function supercub.attach(self, player, instructor_mode)
     --player:set_physics_override({gravity = 0})
     -- make the driver sit
     minetest.after(0.3, function()
-        player = minetest.get_player_by_name(name)
         if player then
+            --minetest.chat_send_all("okay")
 	        player_api.set_animation(player, "sit")
             --apply_physics_override(player, {speed=0,gravity=0,jump=0})
         end
@@ -557,7 +557,9 @@ function supercub.flightstep(self)
         self._last_accell = new_accel
 	    self.object:move_to(curr_pos)
         --self.object:set_velocity(velocity)
-        self.object:set_acceleration(self.object:get_acceleration())
+        if player then 
+            supercub.attach(self, player, self._instruction_mode)
+        end
         mobkit.set_acceleration(self.object, new_accel)
     else
         if stop == true then
