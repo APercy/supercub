@@ -427,7 +427,7 @@ function supercub.flightstep(self)
 
     local is_attached = supercub.checkAttach(self, player)
 
-    if longit_speed == 0 and is_flying == false and is_attached == false then
+    if longit_speed == 0 and is_flying == false and is_attached == false and self._engine_running == false then
         return
     end
 
