@@ -83,7 +83,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				"Fuel \n\n",
 				"To fly, the aircraft needs fuel for its engine. So it is \n",
 				"necessary to supply it. To do this, it is necessary to \n",
-				"have the selected fuel in hand and punch it in the float. \n",
+				"have the selected fuel in hand and punch it against the plane. \n",
 				"Depending on the fuel mod used and which container, a \n",
 				"greater or lesser number of fuel units may be required to \n",
 				"fill the tank. In the case of the Lokrates biofuel mod, \n",
