@@ -211,19 +211,7 @@ function supercub.testImpact(self, velocity, position)
     --minetest.chat_send_all('impact: '.. impact .. ' - hp: ' .. self.hp_max)
     if impact > 2 then
         --minetest.chat_send_all('impact: '.. impact .. ' - hp: ' .. self.hp_max)
-		local nodeu = mobkit.nodeatpos(mobkit.pos_shift(p,{y=1}))
-		local noded = mobkit.nodeatpos(mobkit.pos_shift(p,{y=-2.8}))
-        local nodel = mobkit.nodeatpos(mobkit.pos_shift(p,{x=-1}))
-        local noder = mobkit.nodeatpos(mobkit.pos_shift(p,{x=1}))
-        local nodef = mobkit.nodeatpos(mobkit.pos_shift(p,{z=1}))
-        local nodeb = mobkit.nodeatpos(mobkit.pos_shift(p,{z=-1}))
-		if (nodeu and nodeu.drawtype ~= 'airlike') or
-            (nodef and nodef.drawtype ~= 'airlike') or
-            (nodeb and nodeb.drawtype ~= 'airlike') or
-            (noder and noder.drawtype ~= 'airlike') or
-            (nodel and nodel.drawtype ~= 'airlike') then
-			collision = true
-		end
+		collision = self.colinfo.collides
     end
 
     if impact > 1.2  and self._longit_speed > 2 then
