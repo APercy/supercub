@@ -530,6 +530,7 @@ function supercub.flightstep(self)
 
     --lets apply some bob in water
 	if self.isinliquid then
+        self._engine_running = false
         local bob = supercub.minmax(supercub.dot(accel,hull_direction),0.2)	-- vertical bobbing
         accel.y = accel.y + bob
         local max_pitch = 6
