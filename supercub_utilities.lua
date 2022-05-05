@@ -211,7 +211,9 @@ function supercub.testImpact(self, velocity, position)
     --minetest.chat_send_all('impact: '.. impact .. ' - hp: ' .. self.hp_max)
     if impact > 2 then
         --minetest.chat_send_all('impact: '.. impact .. ' - hp: ' .. self.hp_max)
-		collision = self.colinfo.collides
+        if self.colinfo then
+            collision = self.colinfo.collides
+        end
     end
 
     if impact > 1.2  and self._longit_speed > 2 then
