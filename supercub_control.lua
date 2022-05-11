@@ -137,7 +137,9 @@ function supercub.control(self, dtime, hull_direction, longit_speed, longit_drag
         else
             supercub.rudder_auto_correction(self, longit_speed, dtime)
         end
-        supercub.elevator_auto_correction(self, longit_speed, dtime)
+        if airutils.elevator_auto_correction then
+            self._elevator_angle = airutils.elevator_auto_correction(self, longit_speed, self.dtime, supercub.max_speed, self._elevator_angle, supercub.elevator_limit, supercub.ideal_step, 100)
+        end
     end
 
     return retval_accel, stop
@@ -175,20 +177,6 @@ function supercub.rudder_auto_correction(self, longit_speed, dtime)
         self._rudder_angle = 0
     else
         self._rudder_angle = new_rudder_angle
-    end
-end
-
-function supercub.elevator_auto_correction(self, longit_speed, dtime)
-    local factor = 1
-    --if self._elevator_angle > -1.5 then factor = -1 end --here is the "compensator" adjusto to keep it stable
-    if self._elevator_angle > 0 then factor = -1 end
-    local correction = (supercub.elevator_limit*(longit_speed/5000)) * factor * (dtime/supercub.ideal_step)
-    local before_correction = self._elevator_angle
-    local new_elevator_angle = self._elevator_angle + correction
-    if math.sign(before_correction) ~= math.sign(new_elevator_angle) then
-        self._elevator_angle = 0
-    else
-        self._elevator_angle = new_elevator_angle
     end
 end
 
@@ -255,7 +243,9 @@ function supercub.autopilot(self, dtime, hull_direction, longit_speed, accel, cu
 
     if longit_speed > 0 then
         supercub.rudder_auto_correction(self, longit_speed, dtime)
-        supercub.elevator_auto_correction(self, longit_speed, dtime)
+        if airutils.elevator_auto_correction then
+            self._elevator_angle = airutils.elevator_auto_correction(self, longit_speed, self.dtime, supercub.max_speed, self._elevator_angle, supercub.elevator_limit, supercub.ideal_step, 100)
+        end
     end
 
     return retval_accel
