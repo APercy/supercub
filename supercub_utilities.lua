@@ -634,6 +634,14 @@ function supercub.flightstep(self)
     local power_indicator_angle = supercub.get_gauge_angle(self._power_lever/10)
     self.power_gauge:set_attach(self.object,'',SUPERCUB_GAUGE_POWER_POSITION,{x=0,y=0,z=power_indicator_angle})
 
+    if is_flying == false then
+        -- new yaw
+        local turn_rate = math.rad(30)
+        local yaw_turn = self.dtime * math.rad(self._rudder_angle) * turn_rate *
+                    supercub.sign(longit_speed) * math.abs(longit_speed/2)
+	    newyaw = yaw + yaw_turn
+    end
+
     --apply rotations
     self.object:set_rotation({x=newpitch,y=newyaw,z=newroll})
     --end
