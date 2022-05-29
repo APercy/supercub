@@ -38,6 +38,6 @@ function supercub.physics(self)
 		self.object:set_velocity(vnew)
 	end
 
-    self.object:set_acceleration({x=0,y=mobkit.gravity,z=0})
+    self.object:set_acceleration({x=0,y=airutils.gravity,z=0})
 
 end
