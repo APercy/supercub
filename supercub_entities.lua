@@ -174,6 +174,10 @@ minetest.register_entity("supercub:supercub", {
     _inv = nil,
     _inv_id = "",
 
+    _change_color = function(self, colstr)
+        airutils.paint(self, colstr, "supercub_painting.png")
+    end,
+
     get_staticdata = function(self) -- unloaded/unloads ... is now saved
         return minetest.serialize({
             --stored_sound_handle = self.sound_handle,
