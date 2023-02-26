@@ -558,6 +558,12 @@ function supercub.flightstep(self)
     end
     -- end lift
 
+    --wind effects
+    if longit_speed > 1.5 then
+        local wind = airutils.get_wind(curr_pos, 0.1)
+        new_accel = vector.add(new_accel, wind)
+    end
+
     if stop ~= true then --maybe == nil
         self._last_accell = new_accel
 	    self.object:move_to(curr_pos)
