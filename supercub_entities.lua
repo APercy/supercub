@@ -303,6 +303,10 @@ minetest.register_entity("supercub:supercub", {
     logic = supercub.flightstep,
 
 	on_punch = function(self, puncher, ttime, toolcaps, dir, damage)
+        if self.hp_max <= 0 then
+            supercub.destroy(self)
+        end
+
 		if not puncher or not puncher:is_player() then
 			return
 		end
