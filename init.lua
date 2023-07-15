@@ -41,11 +41,7 @@ function supercub.destroy_parts_method(self)
     end
 end
 
-function supercub.step_additional_function(self)
-    if (self.driver_name==nil) and (self.co_pilot==nil) then --pilot or copilot
-        return
-    end
-
+function supercub.internal_controls(self)
     local pos = self._curr_pos
 
     local climb_angle = airutils.get_gauge_angle(self._climb_rate)
@@ -74,6 +70,14 @@ function supercub.step_additional_function(self)
 
     --set stick position
     self.object:set_bone_position("stick", {x=0, y=-6.98695, z=7.80197}, {x=self._elevator_angle/2,y=0,z=self._rudder_angle})
+end
+
+function supercub.step_additional_function(self)
+    if (self.driver_name==nil) and (self.co_pilot==nil) then --pilot or copilot
+        return
+    end
+
+    supercub.internal_controls(self)
 end
 
 supercub.plane_properties = {
