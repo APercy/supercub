@@ -1,5 +1,3 @@
-dofile(minetest.get_modpath("supercub") .. DIR_DELIM .. "supercub_global_definitions.lua")
-
 --------------
 -- Manual --
 --------------
