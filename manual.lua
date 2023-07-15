@@ -28,7 +28,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "* Left click (with biofuel): add fuel to plane \n",
                 "* Right click and Sneak: enter in flight instructor mode \n",
                 "      (limited vision, so use external camera) \n",
-                "* E (aux1): Start/stop engine \n",
+                "* Right click from inside: plane's main menu \n",
                 "* Jump: Increase power, forward on ground \n",
                 "* Sneak: Decrease power, brake on ground \n",
                 "* Backward: go up flying - nose up \n",
@@ -36,9 +36,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "* Left/right: Turn to left/right, work on and out ground. \n",
                 "* Left and Right together: center all commands \n",
                 "* Sneak and Jump together (normal): activates the autopilot \n",
-                "* Sneak and Jump together (instruction mode): give/take the \n",
-                "      controls to/from pilot student \n",
-                "* Up and Down together: enable/disable HUD \n",
+                "* Up and Down together: enable/disable mouse control \n",
                 "* E and Right click: inventory (only external) \n"
 			}
 			local shortcut_form = table.concat({
@@ -103,7 +101,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				"Operation \n\n",
 				"The aircraft can operate only on land.  \n",
 				"When boarding the aircraft, centralize the commands (A  \n",
-				"and D keys), press E to start the engine and hold Jump  \n",
+				"and D keys), right click to start the engine and hold Jump  \n",
 				"until full power. When the speed reaches the green range, \n",
 				"lightly pull the stick using the S key. Always keep the \n",
 				"speed within the green range to avoid stalling. To land, \n",
@@ -131,9 +129,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if fields.paint then
 			local text = {
 				"Painting \n\n",
-				"Painting the aircraft is quite simple. It works in the same \n",
-				"way as the fuel supply, but instead of using fuel to punch \n",
-				"the floater, use a dye of the chosen color."
+				"Painting the aircraft is quite simple. It works \n",
+				"in the same way as the fuel supply, but instead \n",
+				"of using fuel to punch the floater, use a dye \n",
+                " of the chosen color. Can be painted with left \n",
+                "and right click (primary and secondary colors)"
 			}
 			local paint_form = table.concat({
 				"formspec_version[3]",
